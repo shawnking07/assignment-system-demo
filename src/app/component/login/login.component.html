@@ -1,0 +1,20 @@
+<form [formGroup]="formGroup">
+  <mat-form-field class="demo-field">
+    <input matInput placeholder="username" formControlName="username" />
+    <mat-error *ngIf="getControl('username').getError('required')">Required</mat-error>
+  </mat-form-field>
+  <br />
+  <mat-form-field class="demo-field">
+    <input
+      matInput
+      type="password"
+      placeholder="password"
+      formControlName="password"
+    />
+    <mat-error *ngIf="getControl('password').getError('minlength')">Min 6 char.</mat-error>
+    <mat-error *ngIf="getControl('password').getError('required')">Required</mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="login()" [disabled]="!formGroup.valid || token">Login</button>
+  <button mat-raised-button (click)="reset()">Reset</button>
+</form>
+<p>token: {{token}}</p>

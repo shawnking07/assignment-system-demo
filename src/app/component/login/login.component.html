@@ -14,7 +14,8 @@
     <mat-error *ngIf="getControl('password').getError('minlength')">Min 6 char.</mat-error>
     <mat-error *ngIf="getControl('password').getError('required')">Required</mat-error>
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="login()" [disabled]="!formGroup.valid || token">Login</button>
+  <button mat-raised-button color="primary" (click)="login()" [disabled]="!formGroup.valid || socketioSrv.token">Login</button>
+  <button mat-raised-button color="accent" (click)="signup()" [disabled]="!formGroup.valid || socketioSrv.token">SIGNUP & LOGIN</button>
   <button mat-raised-button (click)="reset()">Reset</button>
 </form>
-<p>token: {{token}}</p>
+<div style="word-wrap:break-word">token: {{socketioSrv.token}}</div>

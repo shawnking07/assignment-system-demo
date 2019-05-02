@@ -1,0 +1,9 @@
+<mat-form-field>
+  <input matInput type="text" placeholder="username" [matAutocomplete]="auto">
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let option of socketio.onlines" [value]="option.id">
+    {{ option.username }}
+  </mat-option>
+</mat-autocomplete>

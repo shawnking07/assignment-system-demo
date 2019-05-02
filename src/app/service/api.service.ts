@@ -14,4 +14,8 @@ export class ApiService {
   login({ username, password }) {
     return this.http.post(baseUrl + '/user/login', {username, password}, {responseType: 'text'});
   }
+
+  signup({username, password, role}) {
+    return this.http.post(baseUrl + '/user/signup', {username, password, role});
+  }
 }

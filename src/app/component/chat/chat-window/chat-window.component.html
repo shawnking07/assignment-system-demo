@@ -1,1 +1,16 @@
-<app-login></app-login>
+<mat-toolbar>{{ user?.username }}</mat-toolbar>
+  <!-- <div>
+    <app-receive *ngIf="item.from; else sendTpl">{{item.content}}</app-receive>
+    <ng-template #sendTpl>
+      <app-send>{{item.content}}</app-send>
+    </ng-template>
+  </div> -->
+  <div #msgContent></div>
+
+<div class="send-container">
+  <mat-form-field appearance="outline" class="demo-send">
+    <mat-label>Send Message</mat-label>
+    <input matInput (keydown)="keydown($event)" [(ngModel)]="value" />
+    <mat-icon matSuffix (click)="send()">send</mat-icon>
+  </mat-form-field>
+</div>

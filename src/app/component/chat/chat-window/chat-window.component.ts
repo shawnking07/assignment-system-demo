@@ -27,6 +27,7 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, OnDestroy {
   value = '';
 
   sub: Subscription;
+  chatSub: Subscription;
 
   @ViewChild('msgContent', { read: ViewContainerRef })
   container: ViewContainerRef;
@@ -38,20 +39,17 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sub = this.router.params
-      .pipe(map(v => v.id))
-      .pipe(
-        tap(p => {
-          if (Array.isArray(this.socketio.onlines)) {
-            this.user = this.socketio.onlines.find(_o => _o.id === p);
-          }
-          this.container.clear();
-          const index = this.socketio.onlines.findIndex(v => v.id === p);
-          this.socketio.onlines[index].unread = false;
-          this.socketio.onlines = [...this.socketio.onlines];
-        }),
-        concatMap(p => this.socketio.chat$.pipe(filter(c => c.from === p)))
-      )
+    this.sub = this.router.params.pipe(map(v => v.id)).subscribe(p => {
+      if (Array.isArray(this.socketio.onlines)) {
+        this.user = this.socketio.onlines.find(_o => _o.id === p);
+      }
+      this.container.clear();
+      const index = this.socketio.onlines.findIndex(v => v.id === p);
+      this.socketio.onlines[index].unread = false;
+      this.socketio.onlines = [...this.socketio.onlines];
+    });
+    this.chatSub = this.socketio.chat$
+      .pipe(filter(c => c.from === this.user.id))
       .subscribe(v => {
         const receiveFactory = this.cfr.resolveComponentFactory(
           ReceiveComponent
@@ -87,6 +85,11 @@ export class ChatWindowComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    if (this.chatSub) {
+      this.chatSub.unsubscribe();
+    }
   }
 }
